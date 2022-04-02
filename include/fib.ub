@@ -16,7 +16,7 @@ fun fib_dyn(limit: number): number* {
 	*(mem+8) = 1;
 
 	for let mut i: number = 2; i <= limit; i += 1 {
-		*(mem + (i * 8)) = *(mem + ((i-1) * 8)) + *(mem + ((i-2) * 8))
+		*(mem + (i * 8)) = *(mem + ((i-1) * 8)) + *(mem + ((i-2) * 8));
 	};
 
 	return mem as number*;
