@@ -1,2 +1,4 @@
 #macro true 1 as bool
 #macro false 0 as bool
+
+#macro NULL 0 as void*

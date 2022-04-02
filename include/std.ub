@@ -7,8 +7,20 @@ fun print_str(str: string, len: number): number {
 	return sys_write(1, str as char *, len);
 };
 
-fun print_char_arr(arr: char *, len: number): number {
+fun print_char_ptr(arr: char *, len: number): number {
 	return sys_write(1, arr, len);
+};
+
+fun str_len(buf: char *): number {
+	let mut i: number = 0;
+	let mut s: char* = buf;
+
+	while (*s) != '\0' {
+		i += 1;
+		s += 1;
+	};
+
+	return i;
 };
 
 fun print_number(n: number): void {
