@@ -12,15 +12,11 @@ fun fib(n: number): number {
 fun fib_dyn(limit: number): number* {
 	let mem: number *mut = malloc(limit*8) as number *mut; 
 
-	for let mut i: number = 0; i <= 1; i += 1 {
-		let el_ptr: number *mut = (mem + (i * 8));
-		*(el_ptr) = i;
-	};
+	*(mem) = 0;
+	*(mem+8) = 1;
 
 	for let mut i: number = 2; i <= limit; i += 1 {
-		let el_ptr: number *mut = (mem + (i * 8));
-
-		*(el_ptr) = *(mem + ((i-1) * 8)) + *(mem + ((i-2) * 8))
+		*(mem + (i * 8)) = *(mem + ((i-1) * 8)) + *(mem + ((i-2) * 8))
 	};
 
 	return mem as number*;
