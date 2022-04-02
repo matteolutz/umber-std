@@ -1,0 +1,2 @@
+#macro true 1 as bool
+#macro false 0 as bool

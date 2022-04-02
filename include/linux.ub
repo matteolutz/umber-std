@@ -1,0 +1,30 @@
+#macro SYSCALL_READ 0
+#macro SYSCALL_WRITE 1
+#macro SYSCALL_OPEN 2
+#macro SYSCALL_CLOSE 3
+#macro SYSCALL_STAT 4
+#macro SYSCALL_FSTAT 5
+
+fun sys_read(fd: number, buf: char *mut, size: number): number {
+	return syscall[SYSCALL_READ, fd, buf, size];
+};
+
+fun sys_write(fd: number, buf: char *, size: number): number {
+	return syscall[SYSCALL_WRITE, fd, buf, size];
+};
+
+fun sys_open(filename: char *, flags: number, mode: number): number {
+	return syscall[SYSCALL_OPEN, filename, flags, mode];
+};
+
+fun sys_close(fd: number): number {
+	return syscall[SYSCALL_CLOSE, fd, 0, 0];
+};
+
+fun sys_stat(filename: char *, statbuf: void *mut): number {
+	return syscall[SYSCALL_STAT, filename, statbuf, 0];
+};
+
+fun sys_fstat(fd: number, statbuf: void *mut): number {
+	return syscall[SYSCALL_FSTAT, fd, statbuf, 0];
+};

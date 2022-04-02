@@ -1,0 +1,29 @@
+#include std.ub
+
+fun read_file(filename: char *, buf: char *mut, size: number): number {
+	let fd: number = sys_open(filename, 2, 0);
+
+	if fd < 0 {
+		return fd;
+	};
+
+	sys_read(fd, buf, size);
+
+	sys_close(fd);
+
+	return 0;
+};
+
+fun write_file(filename: char *, buf: char *, size: number): number {
+	let fd: number = sys_open(filename, 1, 0);
+
+	if fd < 0 {
+		return fd;
+	};
+
+	sys_write(fd, buf, size);
+
+	sys_close(fd);
+
+	return 0;
+};

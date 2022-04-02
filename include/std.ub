@@ -1,0 +1,35 @@
+#include core.ub
+
+# Implement logic, to include system relevant things depending on actual system
+#include linux.ub
+
+fun print_str(str: string, len: number): number {
+	return sys_write(1, str as char *, len);
+};
+
+fun print_char_arr(arr: char *, len: number): number {
+	return syscall[1, 1, arr, len];
+};
+
+fun print_number(n: number): void {
+	let mut digit_space: number = 10;
+	let mut digit_pos: number = 0;
+
+	digit_space += 1;
+
+
+
+	return;
+};
+
+fun get_num_arr_index(arr: number *, idx: number): number {
+        return *(arr + (8 * idx));
+};
+
+fun num_ptr_to_index(arr: number *mut, idx: number): number *mut {
+	return arr + (8 * idx);
+};
+
+fun char_ptr_to_index(arr: char *mut, idx: number): char *mut {
+	return arr + idx;
+};
