@@ -8,7 +8,7 @@ fun print_str(str: string, len: number): number {
 };
 
 fun print_char_arr(arr: char *, len: number): number {
-	return syscall[1, 1, arr, len];
+	return sys_write(1, arr, len);
 };
 
 fun print_number(n: number): void {
