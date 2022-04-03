@@ -214,10 +214,3 @@ fun heap_cleanup(): void {
 
 	return;
 };
-
-
-
-
-
-
-
