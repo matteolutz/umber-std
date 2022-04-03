@@ -1,0 +1,223 @@
+#include core.ub
+#include std.ub
+#include memory.ub
+
+# Structure for block
+# size -> 8 bytes (number), OFFSET = 0
+# next -> 8 bytes (void *mut), OFFSET = +8
+# prev -> 8 bytes (void *mut), OFFSET = +16
+
+#macro HEAP_BLOCK_SIZE 24
+
+#macro HEAP_PAGE_SIZE 4096
+#macro HEAP_ALLOC_UNIT HEAP_PAGE_SIZE * 3 
+#macro HEAP_MIN_DEALLOC HEAP_PAGE_SIZE 
+
+static mut heap_head: void *mut = NULL;
+
+# region Heap block helper funcs
+
+fun get_heap_block_size(b: void *mut): number {
+	return *(b as number *);
+};
+
+fun get_heap_block_next(b: void *mut): void *mut {
+	return *(b+8 as void *mut *mut);
+};
+
+fun get_heap_block_prev(b: void *mut): void *mut {
+	return *(b+16 as void *mut *mut);
+};
+
+fun set_heap_block_size(b: void *mut, size: number): void {
+	*(b as number *mut) = size;
+	return;
+};
+
+fun set_heap_block_next(b: void *mut, next: void *mut): void {
+	*(b+8 as void *mut *mut) = next;
+	return;
+};
+
+fun set_heap_block_prev(b: void *mut, prev: void *mut): void {
+	*(b+16 as void *mut *mut) = prev;
+	return;
+};
+
+# endregion
+
+fun heap_stat(): void {
+	let mut ptr: void *mut = heap_head;
+
+	while ptr != NULL {
+		print_str("el\n", 3);
+		ptr = get_heap_block_next(ptr);
+	};
+
+	return;
+};
+
+fun fl_remove(b: void *mut): void {
+	if get_heap_block_prev(b) == NULL {
+		if get_heap_block_next(b) != NULL {
+			heap_head = get_heap_block_next(b);
+		} else {
+			heap_head = NULL;
+		};
+	} else {
+		set_heap_block_next(get_heap_block_prev(b), get_heap_block_next(b));
+		
+	};
+
+	if get_heap_block_next(b) != NULL {
+		set_heap_block_prev(get_heap_block_next(b), get_heap_block_prev(b));	
+	};
+
+	return;
+};
+
+fun fl_add(b: void *mut): void {
+	set_heap_block_prev(b, NULL);
+	set_heap_block_next(b, NULL);
+
+	if heap_head == NULL || heap_head > b {
+		if heap_head != NULL {
+			set_heap_block_prev(heap_head, b);
+		};
+
+		set_heap_block_next(b, heap_head);
+		heap_head = b;
+		return;
+	};
+
+	let mut curr: void *mut = heap_head;
+	while get_heap_block_next(curr) != NULL && get_heap_block_next(curr) < b {
+		curr = get_heap_block_next(curr);
+	};
+
+	set_heap_block_next(b, get_heap_block_next(curr));
+	set_heap_block_next(curr, b);
+
+	return;
+};
+
+fun heap_scan_merge(): void {
+	let mut curr: void *mut = heap_head;
+
+	let mut header_curr: number = let mut header_next: number = 0;
+	let mut program_break: number = sbrk(0) as number;
+
+	if program_break == 0 {
+		# ERROR
+		print_str("err\n", 4);
+		return;
+	};
+
+	while get_heap_block_next(curr) != NULL {
+		header_curr = curr as number;
+		header_next = get_heap_block_next(curr) as number;
+
+		if header_curr + get_heap_block_size(curr) + HEAP_BLOCK_SIZE == header_next {
+
+			set_heap_block_size(curr, get_heap_block_size(curr) + get_heap_block_size(get_heap_block_next(curr)) + HEAP_BLOCK_SIZE);
+			set_heap_block_next(curr, get_heap_block_next(get_heap_block_next(curr)));
+
+			if get_heap_block_next(curr) != NULL {
+				set_heap_block_prev(get_heap_block_next(curr), curr);
+			} else {
+				break;
+			};
+		};
+		
+		curr = get_heap_block_next(curr);
+	};
+
+	header_curr = curr as number;
+
+	if header_curr + get_heap_block_size(curr) + HEAP_BLOCK_SIZE == program_break && get_heap_block_size(curr) >= HEAP_MIN_DEALLOC {
+		fl_remove(curr);
+		# TODO check if curr does not have null address,	
+	};
+
+	return;
+};
+
+fun heap_split(b: void *mut, size: number): void *mut {
+	let mem_block: void *mut = b + HEAP_BLOCK_SIZE;
+	let new_ptr: void *mut = mem_block + size;
+
+	set_heap_block_size(new_ptr, get_heap_block_size(b) - (size + HEAP_BLOCK_SIZE));
+	set_heap_block_size(b, size);
+	
+	return new_ptr;
+};
+
+fun heap_malloc(size: number): void *mut {
+	let mut block_mem: void *mut = let mut ptr: void *mut = let mut new_ptr: void *mut = NULL;
+
+	let mut alloc_size: number = HEAP_ALLOC_UNIT;
+	if size >= HEAP_ALLOC_UNIT {
+		alloc_size = size + HEAP_BLOCK_SIZE;
+	};
+
+	ptr = heap_head;
+
+	while ptr != NULL {
+		if get_heap_block_size(ptr) >= size + HEAP_BLOCK_SIZE {
+			block_mem = ptr + HEAP_BLOCK_SIZE;
+			fl_remove(ptr);
+
+			if get_heap_block_size(ptr) == size  {
+				return block_mem;
+			};
+
+			new_ptr = heap_split(ptr, size);
+			fl_add(new_ptr);
+			return block_mem;
+		} else {
+			ptr = get_heap_block_next(ptr);
+		};
+	};
+
+	ptr = sbrk(alloc_size);
+	if ptr == NULL {
+		print_str("err\n", 4);
+		return NULL;
+	};
+
+	set_heap_block_next(ptr, NULL);
+	set_heap_block_prev(ptr, NULL);
+	set_heap_block_size(ptr, alloc_size - HEAP_BLOCK_SIZE);
+
+	if alloc_size > size + HEAP_BLOCK_SIZE {
+		new_ptr = heap_split(ptr, size);
+		fl_add(new_ptr);
+	};
+
+	return ptr + HEAP_BLOCK_SIZE;
+};
+
+fun heap_free(ptr: void *mut): void {
+	fl_add(ptr - HEAP_BLOCK_SIZE);
+	heap_scan_merge();
+	return;
+};
+
+
+fun heap_cleanup(): void {
+	if heap_head != NULL {
+		# TODO: brk to see if head doesn't start at 0
+		0;
+	};
+
+	heap_head = NULL;
+
+	return;
+};
+
+
+
+
+
+
+
