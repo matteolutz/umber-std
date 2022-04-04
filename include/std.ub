@@ -23,25 +23,20 @@ fun str_len(buf: char *): number {
 	return i;
 };
 
-fun print_number(n: number): void {
-	let mut digit_space: number = 10;
-	let mut digit_pos: number = 0;
+fun itoa(n: number, base: number, buf_end: char *mut): number {
+        *(buf_end as char *mut) = '\0';
 
-	digit_space += 1;
+        let mut current: char *mut = buf_end-1;
 
+        let mut t: number = n;
 
+        while true {
+                *(current -= 8) = '0' + ((t % base) as char);
 
-	return;
-};
+                t /= base;
 
-fun get_num_arr_index(arr: number *, idx: number): number {
-        return *(arr + (8 * idx));
-};
+                if t == 0 { break };
+        };
 
-fun num_ptr_to_index(arr: number *mut, idx: number): number *mut {
-	return arr + (8 * idx);
-};
-
-fun char_ptr_to_index(arr: char *mut, idx: number): char *mut {
-	return arr + idx;
+        return (buf_end - current) as number;
 };
