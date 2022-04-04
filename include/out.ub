@@ -12,3 +12,9 @@ fun print_num(n: number, base: number): void {
 
         return;
 };
+
+fun println_num(n: number, base: number): void {
+	print_num(n, base);
+	print_str("\n", 1);
+	return;
+};

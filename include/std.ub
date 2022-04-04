@@ -3,12 +3,12 @@
 # Implement logic, to include system relevant things depending on actual system
 #include linux.ub
 
-fun print_str(str: string, len: number): number {
-	return sys_write(1, str as char *, len);
-};
-
 fun print_char_ptr(arr: char *, len: number): number {
 	return sys_write(1, arr, len);
+};
+
+fun print_str(str: string, len: number): number {
+	return print_char_ptr(str as char *, len);
 };
 
 fun str_len(buf: char *): number {
@@ -31,7 +31,7 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
         let mut t: number = n;
 
         while true {
-                *(current -= 8) = '0' + ((t % base) as char);
+                *(current -= sizeof[char]) = '0' + ((t % base) as char);
 
                 t /= base;
 
