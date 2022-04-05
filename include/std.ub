@@ -43,13 +43,14 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
 };
 
 fun print_num(n: number, base: number): void {
-	let buf_end: char *mut = (heap_malloc(129) + 129) as char *mut;
+	let begin_ptr: char *mut = (heap_malloc(129)) as char *mut;
+	let buf_end: char *mut = begin_ptr + 129;
 	
         let size: number = itoa(n, base, buf_end);
 
         print_char_ptr((buf_end - size) as char *, size);
 
-        heap_free(buf_end as void *mut);
+        heap_free(begin_ptr as void *mut);
 
         return;
 };
