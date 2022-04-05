@@ -1,6 +1,7 @@
 #include core.ub
+#include heap.ub
 
-# Implement logic, to include system relevant things depending on actual system
+// Implement logic, to include system relevant things depending on actual system
 #include linux.ub
 
 fun print_char_ptr(arr: char *, len: number): number {
@@ -39,4 +40,22 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
         };
 
         return (buf_end - current) as number;
+};
+
+fun print_num(n: number, base: number): void {
+	let buf_end: char *mut = (heap_malloc(129) + 129) as char *mut;
+	
+        let size: number = itoa(n, base, buf_end);
+
+        print_char_ptr((buf_end - size) as char *, size);
+
+        heap_free(buf_end as void *mut);
+
+        return;
+};
+
+fun println_num(n: number, base: number): void {
+	print_num(n, base);
+	print_str("\n", 1);
+	return;
 };

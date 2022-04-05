@@ -1,11 +1,10 @@
 #include core.ub
-#include std.ub
 #include memory.ub
 
-# Structure for block
-# size -> 8 bytes (number), OFFSET = 0
-# next -> 8 bytes (void *mut), OFFSET = +8
-# prev -> 8 bytes (void *mut), OFFSET = +16
+// Structure for block
+// size -> 8 bytes (number), OFFSET = 0
+// next -> 8 bytes (void *mut), OFFSET = +8
+// prev -> 8 bytes (void *mut), OFFSET = +16
 
 #macro HEAP_BLOCK_SIZE 24
 
@@ -15,7 +14,7 @@
 
 static mut heap_head: void *mut = NULL;
 
-# region Heap block helper funcs
+// region Heap block helper funcs
 
 fun get_heap_block_size(b: void *mut): number {
 	return *(b as number *);
@@ -44,13 +43,12 @@ fun set_heap_block_prev(b: void *mut, prev: void *mut): void {
 	return;
 };
 
-# endregion
+// endregion
 
 fun heap_stat(): void {
 	let mut ptr: void *mut = heap_head;
 
 	while ptr != NULL {
-		print_str("el\n", 3);
 		ptr = get_heap_block_next(ptr);
 	};
 
@@ -108,8 +106,7 @@ fun heap_scan_merge(): void {
 	let mut program_break: number = sbrk(0) as number;
 
 	if program_break == 0 {
-		# ERROR
-		print_str("err\n", 4);
+		// ERROR
 		return;
 	};
 
@@ -136,7 +133,7 @@ fun heap_scan_merge(): void {
 
 	if header_curr + get_heap_block_size(curr) + HEAP_BLOCK_SIZE == program_break && get_heap_block_size(curr) >= HEAP_MIN_DEALLOC {
 		fl_remove(curr);
-		# TODO check if curr does not have null address,	
+		// TODO check if curr does not have null address,	
 	};
 
 	return;
@@ -181,7 +178,6 @@ fun heap_malloc(size: number): void *mut {
 
 	ptr = sbrk(alloc_size);
 	if ptr == NULL {
-		print_str("err\n", 4);
 		return NULL;
 	};
 
@@ -206,7 +202,7 @@ fun heap_free(ptr: void *mut): void {
 
 fun heap_cleanup(): void {
 	if heap_head != NULL {
-		# TODO: brk to see if head doesn't start at 0
+		// TODO: brk to see if head doesn't start at 0
 		0;
 	};
 
