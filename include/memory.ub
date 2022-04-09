@@ -3,5 +3,4 @@ fun sbrk(size: number): void *mut {
 	let new_brk: number = prev + size;
 	syscall[12, new_brk, 0, 0];
 	return prev as void *mut;
-
 };

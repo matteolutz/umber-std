@@ -5,58 +5,64 @@
 #include linux.ub
 
 fun print_char_ptr(arr: char *, len: number): number {
-	return sys_write(1, arr, len);
+    return sys_write(1, arr, len);
 };
 
 fun print_str(str: string, len: number): number {
-	return print_char_ptr(str as char *, len);
+    return print_char_ptr(str as char *, len);
 };
 
-fun str_len(buf: char *): number {
-	let mut i: number = 0;
-	let mut s: char* = buf;
+fun cstrlen(buf: char *): number {
+    let mut i: number = 0;
+    let mut s: char* = buf;
 
-	while (*s) != '\0' {
-		i += 1;
-		s += 1;
-	};
+    while (*s) != '\0' {
+        i += 1;
+        s += 1;
+    };
 
-	return i;
+    return i;
 };
 
 fun itoa(n: number, base: number, buf_end: char *mut): number {
-        *(buf_end as char *mut) = '\0';
+    *(buf_end as char *mut) = '\0';
 
-        let mut current: char *mut = buf_end-1;
+    let mut current: char *mut = buf_end-1;
 
-        let mut t: number = n;
+    let mut t: number = n;
 
-        while true {
-                *(current -= sizeof[char]) = '0' + ((t % base) as char);
-
-                t /= base;
-
-                if t == 0 { break };
+    while true {
+        let mut new: number = ('0' as number) + (t % base);
+        if new > 57 {
+            new = (new % 57) + ('A' as number) - 1;
         };
 
-        return (buf_end - current) as number;
+        // *(current -= sizeof[char]) = '0' + ((t % base) as char);
+        *(current -= sizeof[char]) = new as char;
+
+        t /= base;
+
+        if t == 0 { break };
+    };
+
+    return (buf_end - current) as number;
 };
 
 fun print_num(n: number, base: number): void {
-	let begin_ptr: char *mut = (heap_malloc(129)) as char *mut;
-	let buf_end: char *mut = begin_ptr + 129;
-	
-        let size: number = itoa(n, base, buf_end);
+    let begin_ptr: char *mut = (malloc(128)) as char *mut;
+    let buf_end: char *mut = begin_ptr + 128;
 
-        print_char_ptr((buf_end - size) as char *, size);
+    let size: number = itoa(n, base, buf_end);
 
-        heap_free(begin_ptr as void *mut);
+    print_char_ptr((buf_end - size) as char *, size);
 
-        return;
+    free(begin_ptr as void *mut);
+
+    return;
 };
 
 fun println_num(n: number, base: number): void {
-	print_num(n, base);
-	print_str("\n", 1);
-	return;
+    print_num(n, base);
+    print_str("\n", 1);
+    return;
 };

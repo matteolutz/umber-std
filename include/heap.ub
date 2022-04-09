@@ -149,7 +149,7 @@ fun heap_split(b: void *mut, size: number): void *mut {
 	return new_ptr;
 };
 
-fun heap_malloc(size: number): void *mut {
+fun malloc(size: number): void *mut {
 	let mut block_mem: void *mut = let mut ptr: void *mut = let mut new_ptr: void *mut = NULL;
 
 	let mut alloc_size: number = HEAP_ALLOC_UNIT;
@@ -193,7 +193,7 @@ fun heap_malloc(size: number): void *mut {
 	return ptr + HEAP_BLOCK_SIZE;
 };
 
-fun heap_free(ptr: void *mut): void {
+fun free(ptr: void *mut): void {
 	fl_add(ptr - HEAP_BLOCK_SIZE);
 	heap_scan_merge();
 	return;
