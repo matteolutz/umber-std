@@ -25,19 +25,20 @@ fun cstrlen(buf: char *): number {
 };
 
 fun itoa(n: number, base: number, buf_end: char *mut): number {
-    *(buf_end as char *mut) = '\0';
-
+    (buf_end as char *mut) @= '\0';
     let mut current: char *mut = buf_end-1;
 
     let mut t: number = n;
 
     while true {
         let mut new: number = ('0' as number) + (t % base);
+
+        // Skips from ascii numbers to letters, to correctly represent hex numbers
         if new > 57 {
             new = (new % 57) + ('A' as number) - 1;
         };
 
-        *(current -= sizeof[char]) = new as char;
+        (current -= sizeof[char]) @= new as char;
 
         t /= base;
 
@@ -48,7 +49,7 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
 };
 
 fun print_num(n: number, base: number): void {
-    let begin_ptr: char *mut = (malloc(128)) as char *mut;
+    let begin_ptr: char *mut = malloc(128) as char *mut;
     let buf_end: char *mut = begin_ptr + 128;
 
     let size: number = itoa(n, base, buf_end);

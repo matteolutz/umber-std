@@ -21,25 +21,25 @@ fun get_heap_block_size(b: void *mut): number {
 };
 
 fun get_heap_block_next(b: void *mut): void *mut {
-	return *(b+8 as void *mut *mut);
+	return *((b+8) as void *mut *mut);
 };
 
 fun get_heap_block_prev(b: void *mut): void *mut {
-	return *(b+16 as void *mut *mut);
+	return *((b+16) as void *mut *mut);
 };
 
 fun set_heap_block_size(b: void *mut, size: number): void {
-	*(b as number *mut) = size;
+	(b as number *mut) @= size;
 	return;
 };
 
 fun set_heap_block_next(b: void *mut, next: void *mut): void {
-	*(b+8 as void *mut *mut) = next;
+	((b+8)as void *mut *mut) @= next;
 	return;
 };
 
 fun set_heap_block_prev(b: void *mut, prev: void *mut): void {
-	*(b+16 as void *mut *mut) = prev;
+	((b+16) as void *mut *mut) @= prev;
 	return;
 };
 
