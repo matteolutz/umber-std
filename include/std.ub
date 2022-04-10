@@ -16,7 +16,7 @@ fun cstrlen(buf: char *): number {
     let mut i: number = 0;
     let mut s: char* = buf;
 
-    while (*s) != '\0' {
+    while (s @1) != 0 {
         i += 1;
         s += 1;
     };
@@ -37,7 +37,6 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
             new = (new % 57) + ('A' as number) - 1;
         };
 
-        // *(current -= sizeof[char]) = '0' + ((t % base) as char);
         *(current -= sizeof[char]) = new as char;
 
         t /= base;
