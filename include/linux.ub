@@ -7,6 +7,8 @@
 
 #macro SYSCALL_EXIT 60
 
+#macro SYSCALL_TIME 201
+
 fun sys_read(fd: number, buf: char *mut, size: number): number {
 	return syscall[SYSCALL_READ, fd, buf, size];
 };
@@ -33,4 +35,8 @@ fun sys_fstat(fd: number, statbuf: void *mut): number {
 
 fun sys_exit(status: number): number {
 	return syscall[SYSCALL_EXIT, status, 0, 0];
+};
+
+fun sys_time(tloc: void *mut): number {
+	return syscall[SYSCALL_TIME, tloc, 0, 0];
 };
