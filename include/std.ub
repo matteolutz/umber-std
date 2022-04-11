@@ -4,25 +4,33 @@
 // Implement logic, to include system relevant things depending on actual system
 #include linux.ub
 
-fun print_char_ptr(arr: char *, len: number): number {
-    return sys_write(1, arr, len);
-};
-
-fun print_str(str: string, len: number): number {
-    return print_char_ptr(str as char *, len);
-};
-
 fun cstrlen(buf: char *): number {
     let mut i: number = 0;
-    let mut s: char* = buf;
+    let mut s: char * = buf;
 
-    while (s @1) != 0 {
+    while (s @1) != '\0' {
         i += 1;
         s += 1;
     };
 
     return i;
 };
+
+fun cstrcmp(a: char *, b: char *): number {
+    while (a @1) != '\0' {
+
+        if (a @1) != (b @1) {
+            break;
+        };
+
+        a += 1;
+        b += 1;
+    };
+
+    return (a @1) as number - (b @1) as number;
+};
+
+fun cstreq(a: char *, b: char *): bool { return cstrcmp(a, b) == 0 };
 
 fun itoa(n: number, base: number, buf_end: char *mut): number {
     (buf_end as char *mut) @= '\0';
@@ -48,6 +56,18 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
     return (buf_end - current) as number;
 };
 
+fun print_char_ptr(arr: char *, len: number): number {
+    return sys_write(1, arr, len);
+};
+
+fun print_str(str: string, len: number): number {
+    return print_char_ptr(str as char *, len);
+};
+
+fun print_strl(str: string): number {
+    return print_str(str, cstrlen(str as char *));
+};
+
 fun print_num(n: number, base: number): void {
     let begin_ptr: char *mut = malloc(128) as char *mut;
     let buf_end: char *mut = begin_ptr + 128;
@@ -65,4 +85,31 @@ fun println_num(n: number, base: number): void {
     print_num(n, base);
     print_str("\n", 1);
     return;
+};
+
+fun get_args_arr(argc: number, args: char *): char ** {
+
+	let buff: char **mut = malloc(argc * 8) as char **mut;
+
+	let mut curr_begin: char * = args;
+	let mut curr: char * = curr_begin;
+
+	let mut count: number = 0;
+
+	while true {
+		if count == argc { break };
+		
+		if (curr @1) == '\0' {
+			(buff + (count * 8)) @= curr_begin;
+			count += 1;
+
+			curr += 1;
+			curr_begin = curr;
+			continue;
+		};
+		
+		curr += 1;
+	};
+
+	return buff as char **;
 };
