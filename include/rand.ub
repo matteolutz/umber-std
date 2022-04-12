@@ -1,7 +1,7 @@
 static mut NEXT_RAND: number = 0;
 
 fun rand(): number {
-	NEXT_RAND = NEXT_RAND * 1103515245 + 12345;
+    NEXT_RAND = NEXT_RAND * 1103515245 + 12345;
     return (NEXT_RAND / 65536) % 32768;
 };
 
