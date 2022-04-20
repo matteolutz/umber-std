@@ -10,33 +10,33 @@
 #macro SYSCALL_TIME 201
 
 fun sys_read(fd: number, buf: char *mut, size: number): number {
-	return syscall[SYSCALL_READ, fd, buf, size];
+    return syscall[SYSCALL_READ, fd, buf, size];
 };
 
 fun sys_write(fd: number, buf: char *, size: number): number {
-	return syscall[SYSCALL_WRITE, fd, buf, size];
+    return syscall[SYSCALL_WRITE, fd, buf, size];
 };
 
 fun sys_open(filename: char *, flags: number, mode: number): number {
-	return syscall[SYSCALL_OPEN, filename, flags, mode];
+    return syscall[SYSCALL_OPEN, filename, flags, mode];
 };
 
 fun sys_close(fd: number): number {
-	return syscall[SYSCALL_CLOSE, fd, 0, 0];
+    return syscall[SYSCALL_CLOSE, fd, 0, 0];
 };
 
 fun sys_stat(filename: char *, statbuf: void *mut): number {
-	return syscall[SYSCALL_STAT, filename, statbuf, 0];
+    return syscall[SYSCALL_STAT, filename, statbuf, 0];
 };
 
 fun sys_fstat(fd: number, statbuf: void *mut): number {
-	return syscall[SYSCALL_FSTAT, fd, statbuf, 0];
+    return syscall[SYSCALL_FSTAT, fd, statbuf, 0];
 };
 
 fun sys_exit(status: number): number {
-	return syscall[SYSCALL_EXIT, status, 0, 0];
+    return syscall[SYSCALL_EXIT, status, 0, 0];
 };
 
 fun sys_time(tloc: void *mut): number {
-	return syscall[SYSCALL_TIME, tloc, 0, 0];
+    return syscall[SYSCALL_TIME, tloc, 0, 0];
 };

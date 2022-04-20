@@ -1,23 +1,23 @@
 fun abs(n: number): number {
-	let y: number = n >> ((sizeof[number] * 8) - 1);
-	return (n ^ y) - y;
+    let y: number = n >> ((sizeof[number] * 8) - 1);
+    return (n ^ y) - y;
 };
 
 fun fast_abs(n: number): number { return ((n >> ((sizeof[number] * 8)-2)) | 1) * n };
 
 fun pow(x: number, n: number): number {
 
-	let mut temp: number = 0;
-	if n == 0 {
-		return 1;
-	};
+    let mut temp: number = 0;
+    if n == 0 {
+        return 1;
+    };
 
-	temp = pow(x, n / 2);
-	if (n % 2) == 0 {
-		return temp * temp;
-	} else {
-		return x * temp * temp;
-	};
+    temp = pow(x, n / 2);
+    if (n % 2) == 0 {
+        return temp * temp;
+    } else {
+        return x * temp * temp;
+    };
 
-	return 0;
+    return 0;
 };

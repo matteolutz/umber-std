@@ -89,27 +89,27 @@ fun println_num(n: number, base: number): void {
 
 fun get_args_arr(argc: number, args: char *): char ** {
 
-	let buff: char **mut = malloc(argc * 8) as char **mut;
+    let buff: char **mut = malloc(argc * 8) as char **mut;
 
-	let mut curr_begin: char * = args;
-	let mut curr: char * = curr_begin;
+    let mut curr_begin: char * = args;
+    let mut curr: char * = curr_begin;
 
-	let mut count: number = 0;
+    let mut count: number = 0;
 
-	while true {
-		if count == argc { break };
-		
-		if (curr @1) == '\0' {
-			(buff + (count * 8)) @= curr_begin;
-			count += 1;
+    while true {
+        if count == argc { break };
+        
+        if (curr @1) == '\0' {
+            (buff + (count * 8)) @= curr_begin;
+            count += 1;
 
-			curr += 1;
-			curr_begin = curr;
-			continue;
-		};
-		
-		curr += 1;
-	};
+            curr += 1;
+            curr_begin = curr;
+            continue;
+        };
+        
+        curr += 1;
+    };
 
-	return buff as char **;
+    return buff as char **;
 };
