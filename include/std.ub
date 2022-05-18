@@ -68,9 +68,15 @@ fun print_strl(str: string): number {
     return print_str(str, cstrlen(str as char *));
 };
 
+fun print_char_ptr_l(ptr: char *): number {
+    return print_char_ptr(ptr, cstrlen(ptr));
+};
+
 fun print_num(n: number, base: number): void {
-    let begin_ptr: char *mut = malloc(128) as char *mut;
-    let buf_end: char *mut = begin_ptr + 128;
+    let BUFFER_SIZE: number = 128;
+
+    let begin_ptr: char *mut = malloc(BUFFER_SIZE) as char *mut;
+    let buf_end: char *mut = begin_ptr + BUFFER_SIZE;
 
     let size: number = itoa(n, base, buf_end);
 
