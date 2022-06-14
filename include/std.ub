@@ -1,8 +1,8 @@
-#include core.ub
-#include heap.ub
+import "core.ub";
+import "heap.ub";
 
 // Implement logic, to include system relevant things depending on actual system
-#include linux.ub
+import "linux.ub";
 
 fun cstrlen(buf: char *): number {
     let mut i: number = 0;
@@ -32,6 +32,35 @@ fun cstrcmp(a: char *, b: char *): number {
 
 fun cstreq(a: char *, b: char *): bool { return cstrcmp(a, b) == 0 };
 
+fun print_char_ptr(arr: char *, len: number): number {
+    return sys_write(1, arr, len);
+};
+
+fun print_str(str: string, len: number): number {
+    return print_char_ptr(str as char *, len);
+};
+
+fun print_strl(str: string): number {
+    return print_str(str, cstrlen(str as char *));
+};
+
+fun print_char_ptr_l(ptr: char *): number {
+    return print_char_ptr(ptr, cstrlen(ptr));
+};
+
+fun throw(msg: char *, len: number): void {
+    print_strl("\n\n\u001b[31m[ERROR]\u001b[0m ");
+    print_char_ptr(msg, len);
+    print_strl("\n\nExiting with status code \u001b[31;1m1\u001b[0m...\n\n");
+    sys_exit(1);
+    return;
+};
+
+fun throwc(msg: char *): void {
+    return throw(msg, cstrlen(msg));
+};
+
+
 fun itoa(n: number, base: number, buf_end: char *mut): number {
     (buf_end as char *mut) @= '\0';
     let mut current: char *mut = buf_end-1;
@@ -53,30 +82,18 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
         if t == 0 { break };
     };
 
+    if n < 0 {
+        (current -= sizeof[char]) @= '-';
+    };
+
     return (buf_end - current) as number;
 };
 
-fun print_char_ptr(arr: char *, len: number): number {
-    return sys_write(1, arr, len);
-};
-
-fun print_str(str: string, len: number): number {
-    return print_char_ptr(str as char *, len);
-};
-
-fun print_strl(str: string): number {
-    return print_str(str, cstrlen(str as char *));
-};
-
-fun print_char_ptr_l(ptr: char *): number {
-    return print_char_ptr(ptr, cstrlen(ptr));
-};
-
 fun print_num(n: number, base: number): void {
-    let BUFFER_SIZE: number = 128;
+    let bufferSize: number = 128;
 
-    let begin_ptr: char *mut = malloc(BUFFER_SIZE) as char *mut;
-    let buf_end: char *mut = begin_ptr + BUFFER_SIZE;
+    let begin_ptr: char *mut = malloc(bufferSize) as char *mut;
+    let buf_end: char *mut = begin_ptr + bufferSize;
 
     let size: number = itoa(n, base, buf_end);
 
@@ -118,4 +135,26 @@ fun get_args_arr(argc: number, args: char *): char ** {
     };
 
     return buff as char **;
+};
+
+fun cstrcpy_len(destination: char *mut, origin: char *, len: number): char * {
+    if destination == NULL {
+        return NULL as char *;
+    };
+
+    let ptr: char *mut = destination;
+
+    for let mut i: number = 0; i < len; i += 1 {
+        destination @= origin @1;
+        destination += 1;
+        origin += 1;
+    };
+
+    destination @= '\0';
+
+    return ptr as char *;
+};
+
+fun cstrcpy(destination: char *mut, origin: char *): char * {
+    return cstrcpy_len(destination, origin, cstrlen(origin));
 };

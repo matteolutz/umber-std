@@ -1,10 +1,10 @@
-#include std.ub
+import "std.ub";
 
-#macro O_RDONLY 0
-#macro O_WRONLY 1
-#macro O_RDWR 2
+macro O_RDONLY 0;
+macro O_WRONLY 1;
+macro O_RDWR 2;
 
-#macro O_APPEND 1024
+macro O_APPEND 1024;
 
 fun read_file(filename: char *, buf: char *mut, size: number): number {
     let fd: number = sys_open(filename, 0 | O_RDONLY, 0);

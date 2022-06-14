@@ -1,31 +1,31 @@
-#include core.ub
-#include memory.ub
+import "core.ub";
+import "memory.ub";
 
 // Structure for block
 // size -> 8 bytes (number), OFFSET = 0
 // next -> 8 bytes (void *mut), OFFSET = +8
 // prev -> 8 bytes (void *mut), OFFSET = +16
 
-#macro HEAP_BLOCK_SIZE 24
+macro HEAP_BLOCK_SIZE 24;
 
-#macro HEAP_PAGE_SIZE 4096
-#macro HEAP_ALLOC_UNIT HEAP_PAGE_SIZE * 3 
-#macro HEAP_MIN_DEALLOC HEAP_PAGE_SIZE 
+macro HEAP_PAGE_SIZE 4096;
+macro HEAP_ALLOC_UNIT HEAP_PAGE_SIZE * 3;
+macro HEAP_MIN_DEALLOC HEAP_PAGE_SIZE;
 
 static mut heap_head: void *mut = NULL;
 
 // region Heap block helper funcs
 
 fun get_heap_block_size(b: void *mut): number {
-    return *(b as number *);
+    return (b as number *) @8;
 };
 
 fun get_heap_block_next(b: void *mut): void *mut {
-    return *((b+8) as void *mut *mut);
+    return ((b+8) as void *mut *mut) @8;
 };
 
 fun get_heap_block_prev(b: void *mut): void *mut {
-    return *((b+16) as void *mut *mut);
+    return ((b+16) as void *mut *mut) @8;
 };
 
 fun set_heap_block_size(b: void *mut, size: number): void {

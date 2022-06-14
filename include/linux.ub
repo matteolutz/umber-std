@@ -1,13 +1,13 @@
-#macro SYSCALL_READ 0
-#macro SYSCALL_WRITE 1
-#macro SYSCALL_OPEN 2
-#macro SYSCALL_CLOSE 3
-#macro SYSCALL_STAT 4
-#macro SYSCALL_FSTAT 5
+macro SYSCALL_READ 0;
+macro SYSCALL_WRITE 1;
+macro SYSCALL_OPEN 2;
+macro SYSCALL_CLOSE 3;
+macro SYSCALL_STAT 4;
+macro SYSCALL_FSTAT 5;
 
-#macro SYSCALL_EXIT 60
+macro SYSCALL_EXIT 60;
 
-#macro SYSCALL_TIME 201
+macro SYSCALL_TIME 201;
 
 fun sys_read(fd: number, buf: char *mut, size: number): number {
     return syscall[SYSCALL_READ, fd, buf, size];
