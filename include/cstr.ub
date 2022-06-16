@@ -1,0 +1,49 @@
+fun cstrlen(buf: char *): number {
+    let mut i: number = 0;
+    let mut s: char * = buf;
+
+    while (s @1) != '\0' {
+        i += 1;
+        s += 1;
+    };
+
+    return i;
+};
+
+fun cstrcmp(a: char *, b: char *): number {
+    while (a @1) != '\0' {
+
+        if (a @1) != (b @1) {
+            break;
+        };
+
+        a += 1;
+        b += 1;
+    };
+
+    return (a @1) as number - (b @1) as number;
+};
+
+fun cstreq(a: char *, b: char *): bool { return cstrcmp(a, b) == 0 };
+
+fun cstrcpy_len(destination: char *mut, origin: char *, len: number): char * {
+    if destination == NULL {
+        return NULL as char *;
+    };
+
+    let ptr: char *mut = destination;
+
+    for let mut i: number = 0; i < len; i += 1 {
+        destination @= origin @1;
+        destination += 1;
+        origin += 1;
+    };
+
+    destination @= '\0';
+
+    return ptr as char *;
+};
+
+fun cstrcpy(destination: char *mut, origin: char *): char * {
+    return cstrcpy_len(destination, origin, cstrlen(origin));
+};

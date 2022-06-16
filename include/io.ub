@@ -1,0 +1,59 @@
+fun printf(format: char *, args_len: number, args: void **): void {
+    let mut idx: number = 0;
+    let mut offset: number = 0;
+
+    let mut saw_percent: bool = false;
+    while (format @1) != '\0'  {
+        let c: char = format @1;
+
+        if saw_percent {
+            if idx >= args_len {
+                throwc("Too many format args were passed!" as char *);
+            };
+
+            if c == 's' {
+                let ptr: char * = ((args + offset) as char **) @8;
+                print_char_ptr_l(ptr);
+                offset += sizeof[char *];
+            } else if c == 'd' {
+                let ptr: number * = ((args + offset) as number **) @8;
+                print_num(ptr @8, 10);
+                offset += sizeof[number *];
+            } else if c == 'h' {
+                let ptr: number * = ((args + offset) as number **) @8;
+                print_num(ptr @8, 16);
+                offset += sizeof[number *];
+            } else if c == 'b' {
+                let ptr: number * = ((args + offset) as number **) @8;
+                print_num(ptr @8, 2);
+                offset += sizeof[number *];
+            } else if c == 'p' {
+                let ptr: void * = ((args + offset) as void **) @8;
+                print_num(ptr as number, 10);
+                offset += sizeof[void *];
+            } else {
+                throwc("Unknown formatting argument!" as char *);
+            };
+
+            idx += 1;
+            saw_percent = false;
+            format += 1;
+            continue;
+        };
+
+        if c == '%' {
+            saw_percent = true;
+            format += 1;
+            continue;
+        };
+
+        print_char_ptr(format, 1);
+
+        format += 1;
+    };
+
+    if idx != args_len {
+        throwc("Too less format args were passed!" as char *);
+    };
+    return;
+};

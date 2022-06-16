@@ -4,33 +4,7 @@ import "heap.ub";
 // Implement logic, to include system relevant things depending on actual system
 import "linux.ub";
 
-fun cstrlen(buf: char *): number {
-    let mut i: number = 0;
-    let mut s: char * = buf;
-
-    while (s @1) != '\0' {
-        i += 1;
-        s += 1;
-    };
-
-    return i;
-};
-
-fun cstrcmp(a: char *, b: char *): number {
-    while (a @1) != '\0' {
-
-        if (a @1) != (b @1) {
-            break;
-        };
-
-        a += 1;
-        b += 1;
-    };
-
-    return (a @1) as number - (b @1) as number;
-};
-
-fun cstreq(a: char *, b: char *): bool { return cstrcmp(a, b) == 0 };
+import "cstr.ub";
 
 fun print_char_ptr(arr: char *, len: number): number {
     return sys_write(1, arr, len);
@@ -59,7 +33,6 @@ fun throw(msg: char *, len: number): void {
 fun throwc(msg: char *): void {
     return throw(msg, cstrlen(msg));
 };
-
 
 fun itoa(n: number, base: number, buf_end: char *mut): number {
     (buf_end as char *mut) @= '\0';
@@ -137,24 +110,10 @@ fun get_args_arr(argc: number, args: char *): char ** {
     return buff as char **;
 };
 
-fun cstrcpy_len(destination: char *mut, origin: char *, len: number): char * {
-    if destination == NULL {
-        return NULL as char *;
+
+fun memcpy(dest: void *mut, src: void *, n: number): void {
+    for let mut i: number = 0; i < n; i += 1 {
+        (dest + i) @= (src + i) @1;
     };
-
-    let ptr: char *mut = destination;
-
-    for let mut i: number = 0; i < len; i += 1 {
-        destination @= origin @1;
-        destination += 1;
-        origin += 1;
-    };
-
-    destination @= '\0';
-
-    return ptr as char *;
-};
-
-fun cstrcpy(destination: char *mut, origin: char *): char * {
-    return cstrcpy_len(destination, origin, cstrlen(origin));
+    return;
 };

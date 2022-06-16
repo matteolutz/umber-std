@@ -1,0 +1,27 @@
+import "linux.ub";
+
+macro TCGETS 21505;
+macro TCSETS 21506;
+
+macro EINVAL 22;
+
+macro ICANON 2;
+macro ECHO 8;
+
+macro SIZEOF_tcflag_t 4;
+macro SIZEOF_cc_t 1;
+
+macro SIZEOF_termios 60;
+
+/*
+ * Struct termios
+ * size: 
+*/
+
+fun tcgetattr(fd: number, termios: void *mut): number {
+    return sys_ioctl(fd, TCGETS, termios as number);
+};
+
+fun tcsetattr(fd: number, action: number, termios: void *mut): number {
+    return sys_ioctl(fd, TCSETS + action, termios as number);
+};
