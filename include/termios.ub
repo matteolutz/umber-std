@@ -3,8 +3,6 @@ import "linux.ub";
 macro TCGETS 21505;
 macro TCSETS 21506;
 
-macro EINVAL 22;
-
 macro ICANON 2;
 macro ECHO 8;
 

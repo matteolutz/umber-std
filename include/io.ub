@@ -3,7 +3,7 @@ fun printf(format: char *, args_len: number, args: void **): void {
     let mut offset: number = 0;
 
     let mut saw_percent: bool = false;
-    while (format @1) != '\0'  {
+    while *format != '\0'  {
         let c: char = format @1;
 
         if saw_percent {

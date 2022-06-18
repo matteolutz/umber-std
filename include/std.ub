@@ -52,7 +52,7 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
 
         t /= base;
 
-        if t == 0 { break };
+        if t == 0 { break; };
     };
 
     if n < 0 {
@@ -93,10 +93,10 @@ fun get_args_arr(argc: number, args: char *): char ** {
     let mut count: number = 0;
 
     while true {
-        if count == argc { break };
+        if count == argc { break; };
         
-        if (curr @1) == '\0' {
-            (buff + (count * 8)) @= curr_begin;
+        if *curr == '\0' {
+            buff[count] @= curr_begin;
             count += 1;
 
             curr += 1;
@@ -112,8 +112,10 @@ fun get_args_arr(argc: number, args: char *): char ** {
 
 
 fun memcpy(dest: void *mut, src: void *, n: number): void {
+    let a: char *mut = dest as char *mut;
+    let b: char * = src as char *;
     for let mut i: number = 0; i < n; i += 1 {
-        (dest + i) @= (src + i) @1;
+        a[i] @= *b[i];
     };
     return;
 };

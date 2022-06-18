@@ -17,29 +17,29 @@ static mut heap_head: void *mut = NULL;
 // region Heap block helper funcs
 
 fun get_heap_block_size(b: void *mut): number {
-    return (b as number *) @8;
+    return *(b as number *)[0];
 };
 
 fun get_heap_block_next(b: void *mut): void *mut {
-    return ((b+8) as void *mut *mut) @8;
+    return *(b as void *mut *mut)[1];
 };
 
 fun get_heap_block_prev(b: void *mut): void *mut {
-    return ((b+16) as void *mut *mut) @8;
+    return *(b as void *mut *mut)[2];
 };
 
 fun set_heap_block_size(b: void *mut, size: number): void {
-    (b as number *mut) @= size;
+    (b as number *mut)[0] @= size;
     return;
 };
 
 fun set_heap_block_next(b: void *mut, next: void *mut): void {
-    ((b+8)as void *mut *mut) @= next;
+    (b as void *mut *mut)[1] @= next;
     return;
 };
 
 fun set_heap_block_prev(b: void *mut, prev: void *mut): void {
-    ((b+16) as void *mut *mut) @= prev;
+    (b as void *mut *mut)[2] @= prev;
     return;
 };
 
