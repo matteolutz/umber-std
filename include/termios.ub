@@ -16,10 +16,10 @@ macro SIZEOF_termios 60;
  * size: 
 */
 
-fun tcgetattr(fd: number, termios: void *mut): number {
-    return sys_ioctl(fd, TCGETS, termios as number);
+fun tcgetattr(fd: u64, termios: void *mut): u64 {
+    return sys_ioctl(fd, TCGETS, termios as u64);
 };
 
-fun tcsetattr(fd: number, action: number, termios: void *mut): number {
-    return sys_ioctl(fd, TCSETS + action, termios as number);
+fun tcsetattr(fd: u64, action: u64, termios: void *mut): u64 {
+    return sys_ioctl(fd, TCSETS + action, termios as u64);
 };

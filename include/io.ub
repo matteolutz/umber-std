@@ -1,6 +1,6 @@
-fun printf(format: char *, args_len: number, args: void **): void {
-    let mut idx: number = 0;
-    let mut offset: number = 0;
+fun printf(format: char *, args_len: u64, args: void **): void {
+    let mut idx: u64 = 0;
+    let mut offset: u64 = 0;
 
     let mut saw_percent: bool = false;
     while *format != '\0'  {
@@ -16,20 +16,20 @@ fun printf(format: char *, args_len: number, args: void **): void {
                 print_char_ptr_l(ptr);
                 offset += sizeof[char *];
             } else if c == 'd' {
-                let ptr: number * = ((args + offset) as number **) @8;
+                let ptr: u64 * = ((args + offset) as u64 **) @8;
                 print_num(ptr @8, 10);
-                offset += sizeof[number *];
+                offset += sizeof[u64 *];
             } else if c == 'h' {
-                let ptr: number * = ((args + offset) as number **) @8;
+                let ptr: u64 * = ((args + offset) as u64 **) @8;
                 print_num(ptr @8, 16);
-                offset += sizeof[number *];
+                offset += sizeof[u64 *];
             } else if c == 'b' {
-                let ptr: number * = ((args + offset) as number **) @8;
+                let ptr: u64 * = ((args + offset) as u64 **) @8;
                 print_num(ptr @8, 2);
-                offset += sizeof[number *];
+                offset += sizeof[u64 *];
             } else if c == 'p' {
                 let ptr: void * = ((args + offset) as void **) @8;
-                print_num(ptr as number, 10);
+                print_num(ptr as u64, 10);
                 offset += sizeof[void *];
             } else {
                 throwc("Unknown formatting argument!" as char *);

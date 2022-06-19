@@ -347,46 +347,46 @@ macro PROT_WRITE 2;
 macro SIGQUIT 3;
 
 
-fun sys_read(fd: number, buf: char *mut, size: number): number {
+fun sys_read(fd: u64, buf: char *mut, size: u64): u64 {
     return syscall[SYSCALL_READ, fd, buf, size];
 };
 
-fun sys_write(fd: number, buf: char *, size: number): number {
+fun sys_write(fd: u64, buf: char *, size: u64): u64 {
     return syscall[SYSCALL_WRITE, fd, buf, size];
 };
 
-fun sys_open(filename: char *, flags: number, mode: number): number {
+fun sys_open(filename: char *, flags: u64, mode: u64): u64 {
     return syscall[SYSCALL_OPEN, filename, flags, mode];
 };
 
-fun sys_close(fd: number): number {
+fun sys_close(fd: u64): u64 {
     return syscall[SYSCALL_CLOSE, fd, 0, 0];
 };
 
-fun sys_stat(filename: char *, statbuf: void *mut): number {
+fun sys_stat(filename: char *, statbuf: void *mut): u64 {
     return syscall[SYSCALL_STAT, filename, statbuf, 0];
 };
 
-fun sys_fstat(fd: number, statbuf: void *mut): number {
+fun sys_fstat(fd: u64, statbuf: void *mut): u64 {
     return syscall[SYSCALL_FSTAT, fd, statbuf, 0];
 };
 
-fun sys_ioctl(fd: number, cmd: number, arg: number): number {
+fun sys_ioctl(fd: u64, cmd: u64, arg: u64): u64 {
     return syscall[SYSCALL_IOCTL, fd, cmd, arg];
 };
 
-fun sys_nano_sleep(timespec: void *mut): number {
+fun sys_nano_sleep(timespec: void *mut): u64 {
     return syscall[SYSCALL_NANOSLEEP, timespec, 0, 0];
 };
 
-fun sys_exit(status: number): number {
+fun sys_exit(status: u64): u64 {
     return syscall[SYSCALL_EXIT, status, 0, 0];
 };
 
-fun sys_fcntl(fd: number, cmd: number, arg: number): number {
+fun sys_fcntl(fd: u64, cmd: u64, arg: u64): u64 {
     return syscall[SYSCALL_FCNTL, fd, cmd, arg];
 };
 
-fun sys_time(tloc: void *mut): number {
+fun sys_time(tloc: void *mut): u64 {
     return syscall[SYSCALL_TIME, tloc, 0, 0];
 };

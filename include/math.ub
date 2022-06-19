@@ -1,13 +1,13 @@
-fun abs(n: number): number {
-    let y: number = n >> ((sizeof[number] * 8) - 1);
+fun abs(n: u64): u64 {
+    let y: u64 = n >> ((sizeof[u64] * 8) - 1);
     return (n ^ y) - y;
 };
 
-fun fast_abs(n: number): number { return ((n >> ((sizeof[number] * 8)-2)) | 1) * n };
+fun fast_abs(n: u64): u64 { return ((n >> ((sizeof[u64] * 8)-2)) | 1) * n };
 
-fun pow(x: number, n: number): number {
+fun pow(x: u64, n: u64): u64 {
 
-    let mut temp: number = 0;
+    let mut temp: u64 = 0;
     if n == 0 {
         return 1;
     };

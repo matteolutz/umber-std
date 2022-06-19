@@ -1,7 +1,7 @@
 import "std.ub";
 
-fun read_file(filename: char *, buf: char *mut, size: number): number {
-    let fd: number = sys_open(filename, 0 | O_RDONLY, 0);
+fun read_file(filename: char *, buf: char *mut, size: u64): u64 {
+    let fd: u64 = sys_open(filename, 0 | O_RDONLY, 0);
 
     if fd < 0 {
         return fd;
@@ -14,8 +14,8 @@ fun read_file(filename: char *, buf: char *mut, size: number): number {
     return 0;
 };
 
-fun write_file(filename: char *, buf: char *, size: number): number {
-    let fd: number = sys_open(filename, 0 | O_WRONLY, 0);
+fun write_file(filename: char *, buf: char *, size: u64): u64 {
+    let fd: u64 = sys_open(filename, 0 | O_WRONLY, 0);
 
     if fd < 0 {
         return fd;
@@ -28,8 +28,8 @@ fun write_file(filename: char *, buf: char *, size: number): number {
     return 0;
 };
 
-fun append_file(filename: char *, buf: char *, size: number): number {
-    let fd: number = sys_open(filename, 0 | O_WRONLY | O_APPEND, 0);
+fun append_file(filename: char *, buf: char *, size: u64): u64 {
+    let fd: u64 = sys_open(filename, 0 | O_WRONLY | O_APPEND, 0);
 
     if fd < 0 {
         return fd;

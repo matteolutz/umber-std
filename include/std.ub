@@ -6,23 +6,23 @@ import "linux.ub";
 
 import "cstr.ub";
 
-fun print_char_ptr(arr: char *, len: number): number {
+fun print_char_ptr(arr: char *, len: u64): u64 {
     return sys_write(1, arr, len);
 };
 
-fun print_str(str: string, len: number): number {
+fun print_str(str: string, len: u64): u64 {
     return print_char_ptr(str as char *, len);
 };
 
-fun print_strl(str: string): number {
+fun print_strl(str: string): u64 {
     return print_str(str, cstrlen(str as char *));
 };
 
-fun print_char_ptr_l(ptr: char *): number {
+fun print_char_ptr_l(ptr: char *): u64 {
     return print_char_ptr(ptr, cstrlen(ptr));
 };
 
-fun throw(msg: char *, len: number): void {
+fun throw(msg: char *, len: u64): void {
     print_strl("\n\n\u001b[31m[ERROR]\u001b[0m ");
     print_char_ptr(msg, len);
     print_strl("\n\nExiting with status code \u001b[31;1m1\u001b[0m...\n\n");
@@ -34,18 +34,28 @@ fun throwc(msg: char *): void {
     return throw(msg, cstrlen(msg));
 };
 
-fun itoa(n: number, base: number, buf_end: char *mut): number {
+fun atoi(str: char *): u64 {
+    let mut res: u64 = 0;
+
+    for let mut i: u64 = 0; *str[i] != '\0'; i += 1 {
+        res = res * 10 + (*str[i] - '0') as u64;
+    };
+
+    return res;
+};
+
+fun itoa(n: u64, base: u64, buf_end: char *mut): u64 {
     (buf_end as char *mut) @= '\0';
     let mut current: char *mut = buf_end-1;
 
-    let mut t: number = n;
+    let mut t: u64 = n;
 
     while true {
-        let mut new: number = ('0' as number) + (t % base);
+        let mut new: u64 = ('0' as u64) + (t % base);
 
         // Skips from ascii numbers to letters, to correctly represent hex numbers
         if new > 57 {
-            new = (new % 57) + ('A' as number) - 1;
+            new = (new % 57) + ('A' as u64) - 1;
         };
 
         (current -= sizeof[char]) @= new as char;
@@ -59,16 +69,16 @@ fun itoa(n: number, base: number, buf_end: char *mut): number {
         (current -= sizeof[char]) @= '-';
     };
 
-    return (buf_end - current) as number;
+    return (buf_end - current) as u64;
 };
 
-fun print_num(n: number, base: number): void {
-    let bufferSize: number = 128;
+fun print_num(n: u64, base: u64): void {
+    let bufferSize: u64 = 128;
 
     let begin_ptr: char *mut = malloc(bufferSize) as char *mut;
     let buf_end: char *mut = begin_ptr + bufferSize;
 
-    let size: number = itoa(n, base, buf_end);
+    let size: u64 = itoa(n, base, buf_end);
 
     print_char_ptr((buf_end - size) as char *, size);
 
@@ -77,20 +87,20 @@ fun print_num(n: number, base: number): void {
     return;
 };
 
-fun println_num(n: number, base: number): void {
+fun println_num(n: u64, base: u64): void {
     print_num(n, base);
     print_str("\n", 1);
     return;
 };
 
-fun get_args_arr(argc: number, args: char *): char ** {
+fun get_args_arr(argc: u64, args: char *): char ** {
 
     let buff: char **mut = malloc(argc * 8) as char **mut;
 
     let mut curr_begin: char * = args;
     let mut curr: char * = curr_begin;
 
-    let mut count: number = 0;
+    let mut count: u64 = 0;
 
     while true {
         if count == argc { break; };
@@ -111,10 +121,10 @@ fun get_args_arr(argc: number, args: char *): char ** {
 };
 
 
-fun memcpy(dest: void *mut, src: void *, n: number): void {
+fun memcpy(dest: void *mut, src: void *, n: u64): void {
     let a: char *mut = dest as char *mut;
     let b: char * = src as char *;
-    for let mut i: number = 0; i < n; i += 1 {
+    for let mut i: u64 = 0; i < n; i += 1 {
         a[i] @= *b[i];
     };
     return;

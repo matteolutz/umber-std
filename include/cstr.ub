@@ -1,5 +1,5 @@
-fun cstrlen(buf: char *): number {
-    let mut i: number = 0;
+fun cstrlen(buf: char *): u64 {
+    let mut i: u64 = 0;
     let mut s: char * = buf;
 
     while *s != '\0' {
@@ -10,7 +10,7 @@ fun cstrlen(buf: char *): number {
     return i;
 };
 
-fun cstrcmp(a: char *, b: char *): number {
+fun cstrcmp(a: char *, b: char *): u64 {
     while *a != '\0' {
 
         if *a != *b {
@@ -21,19 +21,19 @@ fun cstrcmp(a: char *, b: char *): number {
         b += 1;
     };
 
-    return (*a) as number - (*b) as number;
+    return (*a) as u64 - (*b) as u64;
 };
 
 fun cstreq(a: char *, b: char *): bool { return cstrcmp(a, b) == 0; };
 
-fun cstrcpy_len(destination: char *mut, origin: char *, len: number): char * {
+fun cstrcpy_len(destination: char *mut, origin: char *, len: u64): char * {
     if destination == NULL {
         return NULL as char *;
     };
 
     let ptr: char *mut = destination;
 
-    for let mut i: number = 0; i < len; i += 1 {
+    for let mut i: u64 = 0; i < len; i += 1 {
         destination @= *origin;
         destination += 1;
         origin += 1;

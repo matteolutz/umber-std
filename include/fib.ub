@@ -1,7 +1,7 @@
 import "std.ub";
 import "heap.ub";
 
-fun fib(n: number): number {
+fun fib(n: u64): u64 {
     if n <= 1 {
         return n;
     };
@@ -9,13 +9,13 @@ fun fib(n: number): number {
     return fib(n-1) + fib(n-2);
 };
 
-fun fib_dyn(limit: number): number *mut {
-    let mem: number *mut = heap_malloc(limit*8) as number *mut; 
+fun fib_dyn(limit: u64): u64 *mut {
+    let mem: u64 *mut = heap_malloc(limit*8) as u64 *mut; 
 
     mem @= 0;
     (mem+8) @= 1;
 
-    for let mut i: number = 2; i <= limit; i += 1 {
+    for let mut i: u64 = 2; i <= limit; i += 1 {
         (mem + (i * 8)) @= *(mem + ((i-1) * 8)) + *(mem + ((i-2) * 8));
     };
 

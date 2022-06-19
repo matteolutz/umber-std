@@ -2,7 +2,7 @@ import "core.ub";
 import "memory.ub";
 
 // Structure for block
-// size -> 8 bytes (number), OFFSET = 0
+// size -> 8 bytes (u64), OFFSET = 0
 // next -> 8 bytes (void *mut), OFFSET = +8
 // prev -> 8 bytes (void *mut), OFFSET = +16
 
@@ -16,8 +16,8 @@ static mut heap_head: void *mut = NULL;
 
 // region Heap block helper funcs
 
-fun get_heap_block_size(b: void *mut): number {
-    return *(b as number *)[0];
+fun get_heap_block_size(b: void *mut): u64 {
+    return *(b as u64 *)[0];
 };
 
 fun get_heap_block_next(b: void *mut): void *mut {
@@ -28,8 +28,8 @@ fun get_heap_block_prev(b: void *mut): void *mut {
     return *(b as void *mut *mut)[2];
 };
 
-fun set_heap_block_size(b: void *mut, size: number): void {
-    (b as number *mut)[0] @= size;
+fun set_heap_block_size(b: void *mut, size: u64): void {
+    (b as u64 *mut)[0] @= size;
     return;
 };
 
@@ -102,8 +102,8 @@ fun fl_add(b: void *mut): void {
 fun heap_scan_merge(): void {
     let mut curr: void *mut = heap_head;
 
-    let mut header_curr: number = let mut header_next: number = 0;
-    let mut program_break: number = sbrk(0) as number;
+    let mut header_curr: u64 = let mut header_next: u64 = 0;
+    let mut program_break: u64 = sbrk(0) as u64;
 
     if program_break == 0 {
         // ERROR
@@ -111,8 +111,8 @@ fun heap_scan_merge(): void {
     };
 
     while get_heap_block_next(curr) != NULL {
-        header_curr = curr as number;
-        header_next = get_heap_block_next(curr) as number;
+        header_curr = curr as u64;
+        header_next = get_heap_block_next(curr) as u64;
 
         if header_curr + get_heap_block_size(curr) + HEAP_BLOCK_SIZE == header_next {
 
@@ -129,7 +129,7 @@ fun heap_scan_merge(): void {
         curr = get_heap_block_next(curr);
     };
 
-    header_curr = curr as number;
+    header_curr = curr as u64;
 
     if header_curr + get_heap_block_size(curr) + HEAP_BLOCK_SIZE == program_break && get_heap_block_size(curr) >= HEAP_MIN_DEALLOC {
         fl_remove(curr);
@@ -139,7 +139,7 @@ fun heap_scan_merge(): void {
     return;
 };
 
-fun heap_split(b: void *mut, size: number): void *mut {
+fun heap_split(b: void *mut, size: u64): void *mut {
     let mem_block: void *mut = b + HEAP_BLOCK_SIZE;
     let new_ptr: void *mut = mem_block + size;
 
@@ -149,10 +149,10 @@ fun heap_split(b: void *mut, size: number): void *mut {
     return new_ptr;
 };
 
-fun malloc(size: number): void *mut {
+fun malloc(size: u64): void *mut {
     let mut block_mem: void *mut = let mut ptr: void *mut = let mut new_ptr: void *mut = NULL;
 
-    let mut alloc_size: number = HEAP_ALLOC_UNIT;
+    let mut alloc_size: u64 = HEAP_ALLOC_UNIT;
     if size >= HEAP_ALLOC_UNIT {
         alloc_size = size + HEAP_BLOCK_SIZE;
     };
