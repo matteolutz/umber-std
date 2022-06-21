@@ -129,3 +129,16 @@ fun memcpy(dest: void *mut, src: void *, n: u64): void {
     };
     return;
 };
+
+fun memset(b: void *mut, c: u64, len: u64): void *mut {
+    let mut i: u64 = 0;
+    let mut p: char *mut = b as char *mut;
+
+    while len > 0 {
+        p @= c as char;
+        p += 1;
+        len -= 1;
+    };
+
+    return b;
+};
