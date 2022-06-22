@@ -383,8 +383,8 @@ fun sys_socket(domain: u64, type: u64, protocol: u64): u64 {
     return syscall[SYSCALL_SOCKET, domain, type, protocol];
 };
 
-fun sys_accept(fd: u64, addr: void *mut, len: u64): u64 {
-    return syscall[SYSCALL_ACCEPT, fd, addr, len];
+fun sys_accept(fd: u64, addr: void *mut, addr_len: void *mut): u64 {
+    return syscall[SYSCALL_ACCEPT, fd, addr, addr_len];
 };
 
 fun sys_bind(fd: u64, addr: void *, len: u64): u64 {

@@ -65,10 +65,6 @@ fun itoa(n: u64, base: u64, buf_end: char *mut): u64 {
         if t == 0 { break; };
     };
 
-    if n < 0 {
-        (current -= sizeof[char]) @= '-';
-    };
-
     return (buf_end - current) as u64;
 };
 
@@ -141,4 +137,13 @@ fun memset(b: void *mut, c: u64, len: u64): void *mut {
     };
 
     return b;
+};
+
+fun cstr_from_str(str: char *, len: u64): char *mut {
+    let new: char *mut = malloc(len * sizeof[char] + 1) as char *mut;
+
+    memcpy(new as void *mut, str as void *, len);
+    new[len] @= '\0';
+
+    return new;
 };
