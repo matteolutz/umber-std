@@ -89,7 +89,7 @@ fun println_num(n: u64, base: u64): void {
     return;
 };
 
-fun get_args_arr(argc: u64, args: char *): char ** {
+fun get_args_arr(argc: u64, args: char *): char **mut {
 
     let buff: char **mut = malloc(argc * 8) as char **mut;
 
@@ -113,7 +113,7 @@ fun get_args_arr(argc: u64, args: char *): char ** {
         curr += 1;
     };
 
-    return buff as char **;
+    return buff;
 };
 
 
