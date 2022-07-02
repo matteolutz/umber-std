@@ -69,10 +69,10 @@ fun itoa(n: u64, base: u64, buf_end: char *mut): u64 {
 };
 
 fun print_num(n: u64, base: u64): void {
-    let bufferSize: u64 = 128;
+    let buffer_size: u64 = 128;
 
-    let begin_ptr: char *mut = malloc(bufferSize) as char *mut;
-    let buf_end: char *mut = begin_ptr + bufferSize;
+    let begin_ptr: char *mut = malloc(buffer_size) as char *mut;
+    let buf_end: char *mut = begin_ptr + buffer_size;
 
     let size: u64 = itoa(n, base, buf_end);
 
