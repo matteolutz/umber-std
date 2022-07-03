@@ -45,7 +45,7 @@ fun atoi(str: char *): u64 {
 };
 
 fun itoa(n: u64, base: u64, buf_end: char *mut): u64 {
-    (buf_end as char *mut) @= '\0';
+    buf_end @= '\0';
     let mut current: char *mut = buf_end-1;
 
     let mut t: u64 = n;
