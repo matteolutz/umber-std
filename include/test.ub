@@ -4,7 +4,7 @@ macro ASSERTION_FAILED throwc("Assertion failed" as char *);
 
 fun assert(stmt: u64): void {
     if !stmt {
-        ASSERTION_FAILED
+        ASSERTION_FAILED;
     };
     return;
 };
