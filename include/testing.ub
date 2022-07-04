@@ -1,8 +1,18 @@
 import "std.ub";
 
-fun assert(stmt: u64): void {
+fun assert(stmt: bool): void {
     if !stmt {
         throwc("Assertion failed" as char *);
     };
+    return;
+};
+
+fun assert_eq_u64(a: u64, b: u64): void {
+    assert(a == b);
+    return;
+};
+
+fun assert_neq_u64(a: u64, b: u64): void {
+    assert(a != b);
     return;
 };
