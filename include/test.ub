@@ -1,10 +1,8 @@
 import "std.ub";
 
-macro ASSERTION_FAILED throwc("Assertion failed" as char *);
-
 fun assert(stmt: u64): void {
     if !stmt {
-        ASSERTION_FAILED;
+        throwc("Assertion failed" as char *);
     };
     return;
 };
