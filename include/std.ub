@@ -147,14 +147,3 @@ fun cstr_from_str(str: char *, len: u64): char *mut {
 
     return new;
 };
-
-// region Test
-
-fun assert(stmt: u64): void {
-    if !stmt {
-        throwc("Assertion failed" as char *);
-    };
-    return;
-};
-
-// endregion

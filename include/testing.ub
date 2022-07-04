@@ -1,0 +1,8 @@
+import "std.ub";
+
+fun assert(stmt: u64): void {
+    if !stmt {
+        throwc("Assertion failed" as char *);
+    };
+    return;
+};
