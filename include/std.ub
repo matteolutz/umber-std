@@ -1,4 +1,5 @@
 import "core.ub";
+import "atomic.ub";
 import "heap.ub";
 
 // Implement logic, to include system relevant things depending on actual system
