@@ -1,34 +1,34 @@
 fun rotatel_u8(n: u8, b: u8): u8 {
-    return (n << b) | (n >> ((sizeof[u8] as u8) - b));
+    return (n << b) | (n >> (((sizeof[u8] * 8) as u8) - b));
 };
 
 fun rotater_u8(n: u8, b: u8): u8 {
-    return (n >> b) | (n << ((sizeof[u8] as u8) - b));
+    return (n >> b) | (n << (((sizeof[u8] * 8) as u8) - b));
 };
 
 
 fun rotatel_u16(n: u16, b: u16): u16 {
-    return (n << b) | (n >> ((sizeof[u16] as u16) - b));
+    return (n << b) | (n >> (((sizeof[u16] * 8) as u16) - b));
 };
 
 fun rotater_u16(n: u16, b: u16): u16 {
-    return (n >> b) | (n << ((sizeof[u16] as u16) - b));
+    return (n >> b) | (n << (((sizeof[u16] * 8) as u16) - b));
 };
 
 
 fun rotatel_u32(n: u32, b: u32): u32 {
-    return (n << b) | (n >> ((sizeof[u32] as u32) - b));
+    return (n << b) | (n >> (((sizeof[u32] * 8) as u32) - b));
 };
 
 fun rotater_u32(n: u32, b: u32): u32 {
-    return (n >> b) | (n << ((sizeof[u32] as u32) - b));
+    return (n >> b) | (n << (((sizeof[u32] * 8) as u32) - b));
 };
 
 
 fun rotatel_u64(n: u64, b: u64): u64 {
-    return (n << b) | (n >> (sizeof[u64] - b));
+    return (n << b) | (n >> ((sizeof[u64] * 8) - b));
 };
 
 fun rotater_u64(n: u64, b: u64): u64 {
-    return (n >> b) | (n << (sizeof[u64] - b));
+    return (n >> b) | (n << ((sizeof[u64] * 8) - b));
 };
