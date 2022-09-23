@@ -87,7 +87,7 @@ fun print_num(n: u64, base: u64): void {
     return print_u64(n, base);
 };
 
-fun print_i64(n: i64, base: i64): void {
+fun print_i64(n: i64, base: u64): void {
     let negative: bool = n < 0 as i64;
     if negative {
         n = ~n + 1 as i64;
