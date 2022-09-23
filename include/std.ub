@@ -69,7 +69,7 @@ fun itoa(n: u64, base: u64, buf_end: char *mut): u64 {
     return (buf_end - current) as u64;
 };
 
-fun print_num(n: u64, base: u64): void {
+fun print_u64(n: u64, base: u64): void {
     let buffer_size: u64 = 128;
 
     let begin_ptr: char *mut = malloc(buffer_size) as char *mut;
@@ -84,10 +84,18 @@ fun print_num(n: u64, base: u64): void {
     return;
 };
 
-fun println_num(n: u64, base: u64): void {
+fun print_num(n: u64, base: u64): void {
+    return print_u64(n, base);
+};
+
+fun println_u64(n: u64, base: u64): void {
     print_num(n, base);
     print_str("\n", 1);
     return;
+};
+
+fun println_num(n: u64, base: u64): void {
+    return println_u64(n, base);
 };
 
 fun get_args_arr(argc: u64, args: char *): char **mut {
