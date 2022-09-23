@@ -83,9 +83,29 @@ fun print_u64(n: u64, base: u64): void {
 
     return;
 };
-
 fun print_num(n: u64, base: u64): void {
     return print_u64(n, base);
+};
+
+fun print_i64(n: i64, base: i64): void {
+    let negative: bool = n < 0;
+    if negative {
+        n = ~n + 1;
+        print_strl("-");
+    };
+
+    let buffer_size: u64 = 128;
+
+    let begin_ptr: char *mut = malloc(buffer_size) as char *mut;
+    let buf_end: char *mut = begin_ptr + buffer_size;
+
+    let size: u64 = itoa(n, base, buf_end);
+
+    print_char_ptr((buf_end - size) as char *, size);
+
+    free(begin_ptr as void *mut);
+
+    return;
 };
 
 fun println_u64(n: u64, base: u64): void {
