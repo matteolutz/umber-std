@@ -47,3 +47,8 @@ fun cstrcpy_len(destination: char *mut, origin: char *, len: u64): char * {
 fun cstrcpy(destination: char *mut, origin: char *): char * {
     return cstrcpy_len(destination, origin, cstrlen(origin));
 };
+
+fun cstrcat(destination: char *mut, append: char *): char *mut {
+    cstrcpy(((destination as u64) + cstrlen(destination as char *)) as char *mut, append);
+    return destination;
+};
