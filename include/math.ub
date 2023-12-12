@@ -1,18 +1,18 @@
-fun abs(n: u64): u64 {
+fun abs_u64(n: u64): u64 {
     let y: u64 = n >> ((sizeof[u64] * 8) - 1);
     return (n ^ y) - y;
 };
 
-fun fast_abs(n: u64): u64 { return ((n >> ((sizeof[u64] * 8)-2)) | 1) * n };
+fun fast_abs_u64(n: u64): u64 { return ((n >> ((sizeof[u64] * 8)-2)) | 1) * n; };
 
-fun pow(x: u64, n: u64): u64 {
-
+fun pow_u64(x: u64, n: u64): u64 {
     let mut temp: u64 = 0;
     if n == 0 {
         return 1;
     };
 
-    temp = pow(x, n / 2);
+    temp = pow_u64(x, n / 2);
+
     if (n % 2) == 0 {
         return temp * temp;
     } else {
@@ -20,4 +20,35 @@ fun pow(x: u64, n: u64): u64 {
     };
 
     return 0;
+};
+
+fun ln_f64(x: f64): f64 {
+    let mut old_sum: f64 = 0.0;
+
+    let mut xmlxpl: f64 = (x - 1.0) / (x + 1.0);
+    let mut xmlxpl_2: f64 = xmlxpl * xmlxpl;
+
+    let mut denom: f64 = 1.0;
+    let mut frac: f64 = xmlxpl;
+    let mut term: f64 = frac;
+    let mut sum: f64 = term;
+
+    while sum != old_sum {
+        old_sum = sum;
+
+        denom += 2.0;
+
+        frac *= xmlxpl_2;
+        sum += frac / denom;
+    };
+
+    return sum * 2.0;
+};
+
+fun log10_f64(x: f64): f64 {
+    return ln_f64(x) / 2.3025850929940456840179914546844;
+};
+
+fun floor_f64(x: f64): u64 {
+    return (x - (x % 1.0)) as u64;
 };
